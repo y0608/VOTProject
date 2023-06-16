@@ -23,4 +23,4 @@ def home():
     return render_template('index.html', times=current_times)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
