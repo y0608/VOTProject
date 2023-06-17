@@ -128,7 +128,7 @@
         <h3>{{ time[1] }}</h3>
         
         <div class="clock-container">
-            <div class="clock">
+            <div id="{{time[1]}}" class="clock">
                 <div class="wrap">
                     <span class="hour"></span>
                     <span class="minute"></span>
@@ -137,35 +137,37 @@
                 </div>
             </div>
         </div>
+    {% endfor %}
             
         <br>
     
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
             var inc = 1000;
             var clocks = document.querySelectorAll('.clock');
 
-            function updateClocks() {
+            function clock() {
+                const date = new Date();
                 for (var i = 0; i < clocks.length; i++) {
-                    var clock = clocks[i];
-                    const timeArray = clock.previousElementSibling.textContent.trim().split(':');
+
+                    const timeArray = clocks[i].id.split(':');
+                    console.log(timeArray);
                     const hours = parseInt(timeArray[0]);
                     const minutes = parseInt(timeArray[1]);
                     const seconds = parseInt(timeArray[2]);
 
+                    // console.log(timeArray);
+                    
                     const hour = hours * 30;
                     const minute = minutes * 6;
                     const second = seconds * 6;
 
-                    clock.querySelector('.hour').style.transform = `rotate(${hour}deg)`;
-                    clock.querySelector('.minute').style.transform = `rotate(${minute}deg)`;
-                    clock.querySelector('.second').style.transform = `rotate(${second}deg)`;
+                    clocks[i].querySelector('.hour').style.transform = `rotate(${hour}deg)`;
+                    clocks[i].querySelector('.minute').style.transform = `rotate(${minute}deg)`;
+                    clocks[i].querySelector('.second').style.transform = `rotate(${second}deg)`;
                 }
             }
 
-            setInterval(updateClocks, inc);
-        });
+            setInterval(clock, inc);
         </script>
-    {% endfor %}
 </body>
 </html>
