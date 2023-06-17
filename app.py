@@ -4,7 +4,6 @@ import pytz
 
 app = Flask(__name__)
 
-# Define the time zones
 time_zones = {
     'New York': 'America/New_York',
     'London': 'Europe/London',
@@ -14,13 +13,13 @@ time_zones = {
 
 @app.route('/')
 def home():
-    # Get the current time for each time zone
     current_times = {}
     for city, tz in time_zones.items():
-        current_times[city] = datetime.now(pytz.timezone(tz)).strftime('%Y-%m-%d %H:%M:%S')
+        dateNow = datetime.now(pytz.timezone(tz))
+        current_times[city] = [dateNow.strftime('%Y-%m-%d'),
+                               dateNow.strftime('%H:%M:%S')] # easier to format later
 
-    # Render the template with the current times
     return render_template('index.html', times=current_times)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

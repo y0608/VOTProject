@@ -2,13 +2,170 @@
 <html>
 <head>
     <title>World Clocks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #D9D7DD;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        h2,h3 {
+            color: #666;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .city {
+            font-weight: bold;
+        }
+
+        .date {
+            font-size: 20px;
+        }
+
+        /* css for clock: */
+        /* css, html and js for clock Author: Joe February 20, 2019 https://freefrontend.com/css-clocks/ */
+        .clock-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+        }
+
+        .clock {
+            border-radius: 100%;
+            background: #ffffff;
+            font-family: "Montserrat";
+            border: 5px solid white;
+            box-shadow: inset 2px 3px 8px 0 rgba(0, 0, 0, 0.1);
+
+        }
+
+        .wrap {
+            overflow: hidden;
+            position: relative;
+            width: 350px;
+            height: 350px;
+            border-radius: 100%;
+        }
+
+        .minute,
+        .hour {
+            position: absolute;
+            height: 100px;
+            width: 6px;
+            margin: auto;
+            top: -27%;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: black;
+            transform-origin: bottom center;
+            transform: rotate(0deg);
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .minute {
+            position: absolute;
+            height: 130px;
+            width: 4px;
+            top: -38%;
+            left: 0;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+            transform: rotate(90deg);
+        }
+
+        .second {
+            position: absolute;
+            height: 90px;
+            width: 2px;
+            margin: auto;
+            top: -26%;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-radius: 4px;
+            background: #FF4B3E;
+            transform-origin: bottom center;
+            transform: rotate(180deg);
+            z-index: 1;
+        }
+
+        .dot {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 100px;
+            background: white;
+            border: 2px solid #1b1b1b;
+            border-radius: 100px;
+            margin: auto;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
     <h1>World Clocks</h1>
-    <ul>
-        {% for city, time in times.items() %}
-        <li>{{ city }}: {{ time }}</li>
-        {% endfor %}
-    </ul>
+
+    <br>
+
+    {% for city, time in times.items() %}
+        <h2><span class="city">{{ city }}</span> - <span class="date">{{ time[0] }}</span></h2>
+        <!-- time[0] = date
+             time[1] = hours -->
+        <h3>{{ time[1] }}</h3>
+        
+        <div class="clock-container">
+            <div class="clock">
+                <div class="wrap">
+                    <span class="hour"></span>
+                    <span class="minute"></span>
+                    <span class="second"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </div>
+            
+        <br>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            var inc = 1000;
+            var clocks = document.querySelectorAll('.clock');
+
+            function updateClocks() {
+                for (var i = 0; i < clocks.length; i++) {
+                    var clock = clocks[i];
+                    const timeArray = clock.previousElementSibling.textContent.trim().split(':');
+                    const hours = parseInt(timeArray[0]);
+                    const minutes = parseInt(timeArray[1]);
+                    const seconds = parseInt(timeArray[2]);
+
+                    const hour = hours * 30;
+                    const minute = minutes * 6;
+                    const second = seconds * 6;
+
+                    clock.querySelector('.hour').style.transform = `rotate(${hour}deg)`;
+                    clock.querySelector('.minute').style.transform = `rotate(${minute}deg)`;
+                    clock.querySelector('.second').style.transform = `rotate(${second}deg)`;
+                }
+            }
+
+            setInterval(updateClocks, inc);
+        });
+        </script>
+    {% endfor %}
 </body>
 </html>
